@@ -1,0 +1,124 @@
+\prohl{16.10.2023}
+\subsection{}
+\subsection{}
+\subsection{}
+\subsection{}
+\subsubsection{}
+\subsubsection{}
+\subsubsection{}
+\subsubsection{}
+\subsubsection{}
+\prohl{18.10.2023}
+\bul{
+\item Gleitpunktzahl $g\in G$.
+    \bul{
+    \item Darstellung: $g=\pm d_1,\ldots,d_2\cdot\beta^e$, hierbei ist das $4$-Tupel $(\beta,m,\tul{e},\bar{e})$
+    \item speziell: $d_1>0$ (``Normaleinheit'')
+    }
+\item $g_{\max}=\max_{g\in G}g,\ g_{\min}=\min_{g\in G,g>0}$
+\item Runddungsabbildung $rd\colon G'\to G$ mit
+    \meq{
+        G'=\{0\}\cup\{x\in\RR\colon g_{\min}\leq|x|\leq g_{\max}
+    }
+\item $eps$, die Maschinengenauigkeit:
+    \meq{
+        eps:=\frac{1}{2}\beta^{1-m}
+    }
+}
+\subsubsection{Lemma}
+Sei $0\neq x\in G'$. Dann:
+\meq{
+    |\frac{rd(x)-x}{x}|\leq eps
+}
+\tul{Beweis}
+\num{
+\item Ist $\beta^{e-1}\leq x\leq\beta^{e}$, so hei\ss{}en die beiden Gleitkommazahlen, welche $x$ einschlie\ss{}en, der Abstand $\beta$. Dann aber: $|x-rd(x)|\leq\frac{1}{2}\beta$
+\item Aus 1. haben wir: $|x|\geq\beta^{e-1}$
+\item $\frac{|x-rd(x)|}{|x|}\leq\frac{1}{2}\frac{\beta^{e-n}}{\beta^{e-1}}=eps$.
+}
+\tul{Beispiel}
+\bul{
+\item $\beta=1,n=1$, betrachte $x=0.33$ (ist das eine Zahl?)
+\item Damit $10^{-1}\leq x\leq1$, mit $e=0$
+\item Also $0.3\leq x\leq 0.4$
+}
+\subsubsection*{Arithmetische Grundoperationen}
+Arithmetische Grundoperationen $*\in\{+,-,\cdot,:\}$ werden auf dem Rechner durch entsprechende \trt{Maschinenoperationen} realisiert, kurz:
+\meq{
+    \circ\in\{\oplus,\ominus,\odot,\oslash\}\text{ (Maschinenoperationen)}.
+}
+Ihre Eigenschaft ist, dass sie asu Maschinenzahlen wieder solche machen , gem\"a\ss{}
+\meq{
+    a\circ b=rd(a*b),\ \forall a,b\in G.
+}
+Dann werden die Operationen intern mit meist erh\"ohter Stellenzahl der Nachkommezahlen ausgef\"uhrt, dann in normale Form gebracht.
+\subsubsection{Bemerkung}
+\num{
+\item
+    \bul{
+    \item \"Uberlauf: Falls $|x+y|>g_{\max}$
+    \item \"Unterlauf: Falls $0<|x+y|<g_{\min}$
+    }
+\item Distributiv- und Assoziativgesetze gelten nicht mehr. D.h.
+    \meq{
+        (a\oplus b)\odot c&\neq a\odot c\oplus b\odot c\\
+        (a\oplus b)\oplus c&\neq a\oplus(b\oplus c)
+    }
+\item \trt{Ausl\"oschung} ist unangenehmer Effekt in Gleitkommazahlenarithmetik.
+}
+\tul{Beispiel} \weg
+\subsection{Konditionierung einer numerischen Aufgabe}
+Eine numerische Aufgabe wird als \trt{gut konditioniert} bezeichnet, wenn eine kleine St\"orung der Eingangsdaten nur eine kleine \"Anderung der Ergebnisse zur Folge hat.
+\subsubsection{Beispiel} \weg
+\subsubsection{Bezeichnung (numerische Aufgabe)}
+Unter einer numerischen Aufgabe verstehen wir die Berechnung endlich vieler Gr\"o\ss{}en $y_i\ (1\leq i\leq n)$ und gewissen Gr\"o\ss{}en $x_i\ (1\leq j\leq m)$ mittels der funktionalen Vorschrift:
+\meq{
+    y_i=f_i(x_1,\ldots,x_m)=f_i(\vec{x})
+}
+Beispiel: $f_1(x_1,x_2)=x_1+x_2$.
+\\~\\
+Nachfolgend sei
+\bul{
+\item $\vec{x}=(x_1,\ldots,x_m)^T$
+\item und $\vec{y}=(y_1,\ldots,y_n)$
+\item und $\vec{f}=(f_1,\ldots,f_n)$.
+}
+Nachfolgend nehmen wir die Differenzierbarkeit an von $\vec{f}\colon\RR^n\to\RR^n$. Mittels der \trt{differentiellen Fehlanalyse} wollen wir den Einfluss kleiner Datenfehler $(\Delta_{x_1},\ldots,\Delta_{x_m})$ auf die Resultate $y_i$ untersuchen.
+\\~\\
+Das geschieht mit dem Taylor'schen Satz:
+\meq{
+    \Delta_{y_i}:=f_i(\vec{x}+\vec{\Delta x})-\ubr{f_i(\vec{x})}{$=y_i$}=\sum_{j=1}^m\frac{\partial f_i}{\partial x_j}(\vec{x})\ubr{\Delta x_j}{}+R_f(\vec{x},\vec{\Delta x})
+}
+mit dem Restglied $R_f(\vec{x},\vec{\Delta x})=o(|\vec{\Delta x}|)$, falls $f\in C^2$, d.h. zweimal stetig differenzierbar.
+\\~\\
+Wir schreiben nun:
+\meq{
+    \Delta_{y^i}=\sum_{j=1}^m\frac{\partial f_i}{\partial x_j}(\vec{x})\Delta x_j+o(|\Delta x|).
+}
+Nun dividieren wir durch $y_i\neq0$:
+\meq{
+    |\frac{\Delta y_i}{y_i}|&\leq|\sum_{j=1}^m\frac{\partial f_i}{\partial x_j}(\vec{x})\frac{\Delta x_j}{y_i}|+\frac{o(|\Delta x|)}{|y|}\\
+    &=\sum_{j=1}^m\ubr{|\frac{\partial f_i}{\partial x_j}(\vec{x})\frac{x_i}{f_i(\vec{x})}|}{$:=k_{ij}(\vec{x})$}|\frac{\Delta x_i}{x_j}|+\frac{o(|\Delta x|)}{|y_i|}.
+}
+Die Gr\"o\ss{}en $k_{ij}(\vec{x})$ hei\ss{}en (relative) \trt{Konditionszahlen} der Funktion $\vec{f}$ im Punkt $\vec{x}$. Sie sind ein Ma\ss{} daf\"ur, wie sich relative Eingabefehler verstehen/auswirken.
+\subsubsection{Definition (Landau'sche Symbole)}
+Es seien $g,h\colon\RR\to\RR$. Die Schreibweise
+\abc{
+\item $g(t)=\OO(h(t)\ (t\to0)$ bedeutet, dass f\"ur kleine $t\in(0,t_0]$ mit einer Konstanten $c\geq0$ gilt:
+    \meq{
+        |g(t)|\leq c|h(t)|
+    }
+\item $g(t)=o(h(t))\ (t\to0)$ bedeutet, dass f\"ur kleine $t\in(0,t_9]$ mit einer Funktion $c(t)$ $\downarrow0$, gilt: $|g(t)|\leq c(t)|h(t)|$. Analoge Sichtweisen gelten f\"ur $t\uparrow\infty$.
+}
+\subsubsection{Sprechweise: Doe numerische Aufgabe}
+$\vec{y}=f(\vec{x})$ hei\ss{}t
+\abc{
+\item \trt{schlecht konditioniert}, wenn ein $|k_y(x)|>>1$ ist, ansonsten
+\item gut konditioniert.
+\item Falls $|k_{ij}(\vec{x})$ spricht man von \trt{Fehlerausl\"oschung} ansonsten von Verst\"arkung.
+}
+\subsubsection{Beispiele}
+\num{
+\item Die Addition $y=f(x_1,x_2)=x_1+x_2$ ist f\"ur Zahlen $x_1\approx-x_2$ \trt{schlecht konditioniert} ($\RA$ Ausl\"oschung), w\"ahrend Multiplikation und Division \trt{gut konditioniert} sind.
+}
+
